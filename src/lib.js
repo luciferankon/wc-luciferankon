@@ -1,16 +1,16 @@
-const {SPACE, EMPTY, TAB} = require('./constants');
+const { EMPTY } = require('./constants');
 
 const { 
-  addNumbers, 
-  getLength, 
   getLines, 
   getChars, 
   getWords
 } =require('./utils');
 
-const countWords = function(lines) {
-  const words = lines.map(getWords);
-  return words.map(getLength).reduce(addNumbers, 0);
+const { defaultFormatter, lineFormatter } = require('./formatResult');
+
+const countWords = function(content) {
+  const words = getWords(content);
+  return words.length;
 };
 
 const countChars = function(content) {
@@ -18,29 +18,39 @@ const countChars = function(content) {
   return chars.length;
 };
 
-const countLinesAndWords = function(content) {
+const countLines = function(content) {
   const lines = getLines(content);
-  const lineCount = lines.length - 1;
-  const wordCount = countWords(lines);
-  return { lineCount, wordCount };
+  return lines.length - 1;
+  
 };
 
 const getCounts = function(content) {
-  const lineCount = countLinesAndWords(content).lineCount;
-  const wordCount = countLinesAndWords(content).wordCount;
+  const lineCount = countLines(content);
+  const wordCount = countWords(content);
   const charCount = countChars(content);
   return { lineCount, wordCount, charCount };
 };
 
-const formatResult = function(content, fileName) {
-  const { lineCount, wordCount, charCount } = getCounts(content);
-  const counts = [EMPTY, lineCount, wordCount, charCount];
-  return counts.join(TAB) + SPACE + fileName;
-};
+const createObject = function(option,fileName, formatter){
+  return {option, fileName, formatter};
+}
 
-const wc = function(fileName, fs) {
+const parser = function(args){
+  const maybeOption = args[0];
+  const fileName = args[1];
+  if(!maybeOption.startsWith('-')){
+    return createObject(EMPTY,maybeOption, defaultFormatter);
+  }
+  return createObject(maybeOption,fileName, lineFormatter);
+}
+
+
+const wc = function(args, fs) {
+  const { option, fileName, formatter }  = parser(args);
   const content = fs.readFileSync(fileName, "utf8");
-  return formatResult(content, fileName);
+  const {lineCount, wordCount, charCount} = getCounts(content, args);
+  const result = formatter({lineCount, wordCount, charCount, fileName});
+  return result;
 };
 
 module.exports = { wc };
