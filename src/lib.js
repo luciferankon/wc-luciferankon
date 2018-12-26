@@ -1,34 +1,21 @@
-const NEWLINE = "\n";
-const SPACE = " ";
-const EMPTY = "";
-const TAB = "\t";
+const {SPACE, EMPTY, TAB} = require('./constants');
 
-const getLines = function(content) {
-  return content.split(NEWLINE);
-};
-
-const getChars = function(content) {
-  return content.split(EMPTY);
-};
-
-const isNotEmpty = function(word){
-  return word !== EMPTY;
-}
-const getWords = function(line) {
-  return line.split(SPACE).filter(isNotEmpty);
-};
-
-const getLength = function(word) {
-  return word.length;
-};
-
-const addNumbers = function(first, second) {
-  return first + second;
-};
+const { 
+  addNumbers, 
+  getLength, 
+  getLines, 
+  getChars, 
+  getWords
+} =require('./utils');
 
 const countWords = function(lines) {
   const words = lines.map(getWords);
   return words.map(getLength).reduce(addNumbers, 0);
+};
+
+const countChars = function(content) {
+  const chars = getChars(content);
+  return chars.length;
 };
 
 const countLinesAndWords = function(content) {
@@ -36,11 +23,6 @@ const countLinesAndWords = function(content) {
   const lineCount = lines.length - 1;
   const wordCount = countWords(lines);
   return { lineCount, wordCount };
-};
-
-const countChars = function(content) {
-  const chars = getChars(content);
-  return chars.length;
 };
 
 const getCounts = function(content) {
