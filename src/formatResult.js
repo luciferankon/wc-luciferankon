@@ -10,4 +10,9 @@ const lineFormatter = function({lineCount, fileName}){
   return counts.join(TAB) + SPACE + fileName;
 }
 
-module.exports = { defaultFormatter, lineFormatter };
+const charFormatter = function({charCount, fileName}){
+  const counts = [EMPTY, charCount];
+  return counts.join(TAB) + SPACE + fileName;
+}
+
+module.exports = { defaultFormatter, lineFormatter, charFormatter };

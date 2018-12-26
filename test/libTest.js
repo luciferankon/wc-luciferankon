@@ -32,4 +32,10 @@ describe('wc',() => {
     const actualOutput = wc(['-l','file'],fs);
     assert.deepEqual(expectedOutput,actualOutput);
   });
+
+  it('should return number of character with file name when \'-c\' option is specified', () =>{
+    const expectedOutput = '\t6 file';
+    const actualOutput = wc(['-c','file'],fs);
+    assert.deepEqual(expectedOutput,actualOutput);
+  })
 });
