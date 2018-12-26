@@ -37,5 +37,11 @@ describe('wc',() => {
     const expectedOutput = '\t6 file';
     const actualOutput = wc(['-c','file'],fs);
     assert.deepEqual(expectedOutput,actualOutput);
+  });
+
+  it('should return number of words with file name when \'-w\' option is specified', () => {
+    const expectedOutput = '\t1 file';
+    const actualOutput = wc(['-w','file'],fs);
+    assert.deepEqual(expectedOutput,actualOutput);
   })
 });

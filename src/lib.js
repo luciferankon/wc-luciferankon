@@ -9,7 +9,8 @@ const {
 const { 
   defaultFormatter, 
   lineFormatter,
-  charFormatter
+  charFormatter,
+  wordFormatter
  } = require('./formatResult');
 
 const countWords = function(content) {
@@ -48,7 +49,10 @@ const parser = function(args){
   if(maybeOption == '-l'){
     return createObject(maybeOption,fileName, lineFormatter);
   }
-  return createObject(maybeOption, fileName, charFormatter);
+  if(maybeOption == '-c'){
+    return createObject(maybeOption, fileName, charFormatter);
+  }
+  return createObject(maybeOption,fileName,wordFormatter);
 }
 
 

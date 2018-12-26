@@ -6,13 +6,23 @@ const defaultFormatter = function({lineCount, wordCount, charCount, fileName}) {
 };
 
 const lineFormatter = function({lineCount, fileName}){
-  const counts = [EMPTY, lineCount];
-  return counts.join(TAB) + SPACE + fileName;
+  const count = [EMPTY, lineCount];
+  return count.join(TAB) + SPACE + fileName;
 }
 
 const charFormatter = function({charCount, fileName}){
-  const counts = [EMPTY, charCount];
-  return counts.join(TAB) + SPACE + fileName;
+  const count = [EMPTY, charCount];
+  return count.join(TAB) + SPACE + fileName;
 }
 
-module.exports = { defaultFormatter, lineFormatter, charFormatter };
+const wordFormatter = function({wordCount, fileName}){
+  const count = [EMPTY, wordCount];
+  return count.join(TAB) + SPACE + fileName;
+}
+
+module.exports = { 
+  defaultFormatter, 
+  lineFormatter, 
+  charFormatter, 
+  wordFormatter
+};
