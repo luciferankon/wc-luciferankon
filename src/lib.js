@@ -1,17 +1,11 @@
-const { EMPTY } = require('./constants');
-
+const { parser } = require('./parser');
 const { 
   getLines, 
   getChars, 
   getWords
 } =require('./utils');
 
-const { 
-  defaultFormatter, 
-  lineFormatter,
-  charFormatter,
-  wordFormatter
- } = require('./formatResult');
+const { formatter } = require('./formatResult');
 
 const countWords = function(content) {
   const words = getWords(content);
@@ -36,40 +30,11 @@ const getCounts = function(content) {
   return { lineCount, wordCount, charCount };
 };
 
-const createObject = function(option,fileName, formatter){
-  return {option, fileName, formatter};
-}
-
-const parser = function(args){
-  const maybeOption = args[0];
-  const fileName = args[1];
-  const optionFormatter = {
-    '-l': createObject(maybeOption,fileName, lineFormatter),
-    '-c': createObject(maybeOption, fileName, charFormatter),
-    '-w': createObject(maybeOption,fileName,wordFormatter),
-    
-  }
-  if(maybeOption == '-l'){
-    return createObject(maybeOption,fileName, lineFormatter);
-  }
-  if(maybeOption == '-c'){
-    return createObject(maybeOption, fileName, charFormatter);
-  }
-  if(maybeOption == '-w'){
-    return createObject(maybeOption,fileName,wordFormatter);
-  }
-  if(maybeOption.startsWith('-')){
-    return createObject(maybeOption, fileName, defaultFormatter);
-  }
-  return createObject(EMPTY,maybeOption, defaultFormatter);
-}
-
-
 const wc = function(args, fs) {
-  const { option, fileName, formatter }  = parser(args);
+  const { option, fileName}  = parser(args);
   const content = fs.readFileSync(fileName, "utf8");
   const {lineCount, wordCount, charCount} = getCounts(content, args);
-  const result = formatter({lineCount, wordCount, charCount, fileName});
+  const result = formatter({lineCount, wordCount, charCount, fileName}, option);
   return result;
 };
 
