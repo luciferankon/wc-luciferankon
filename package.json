@@ -1,0 +1,22 @@
+{
+  "name": "wc",
+  "version": "0.0.1",
+  "description": "",
+  "main": "wc.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/STEP-tw/wc-luciferankon.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/STEP-tw/wc-luciferankon/issues"
+  },
+  "homepage": "https://github.com/STEP-tw/wc-luciferankon#readme",
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  }
+}
