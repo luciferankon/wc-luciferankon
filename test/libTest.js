@@ -43,5 +43,11 @@ describe('wc',() => {
     const expectedOutput = '\t1 file';
     const actualOutput = wc(['-w','file'],fs);
     assert.deepEqual(expectedOutput,actualOutput);
+  });
+
+  it('should return number of line, words and characters with file name if option is combination of all options', () =>{
+    const expectedOutput = '\t1\t1\t6 file';
+    const actualOutput = wc(['-lcw','file'],fs);
+    assert.deepEqual(expectedOutput,actualOutput);
   })
 });

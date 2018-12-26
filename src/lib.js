@@ -43,8 +43,11 @@ const createObject = function(option,fileName, formatter){
 const parser = function(args){
   const maybeOption = args[0];
   const fileName = args[1];
-  if(!maybeOption.startsWith('-')){
-    return createObject(EMPTY,maybeOption, defaultFormatter);
+  const optionFormatter = {
+    '-l': createObject(maybeOption,fileName, lineFormatter),
+    '-c': createObject(maybeOption, fileName, charFormatter),
+    '-w': createObject(maybeOption,fileName,wordFormatter),
+    
   }
   if(maybeOption == '-l'){
     return createObject(maybeOption,fileName, lineFormatter);
@@ -52,7 +55,13 @@ const parser = function(args){
   if(maybeOption == '-c'){
     return createObject(maybeOption, fileName, charFormatter);
   }
-  return createObject(maybeOption,fileName,wordFormatter);
+  if(maybeOption == '-w'){
+    return createObject(maybeOption,fileName,wordFormatter);
+  }
+  if(maybeOption.startsWith('-')){
+    return createObject(maybeOption, fileName, defaultFormatter);
+  }
+  return createObject(EMPTY,maybeOption, defaultFormatter);
 }
 
 
