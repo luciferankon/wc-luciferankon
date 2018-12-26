@@ -1,27 +1,33 @@
 const { EMPTY } = require('./constants');
+const HYPHEN = '-';
 
-const createObject = function(option, fileName){
-  return {option, fileName};
+const getLongOptions = function(shortOption){
+  const options = {'l': 'lineCount', 'w': 'wordCount', 'c': 'charCount'};
+  return options[shortOption];
 }
 
-const mapOption = function(option){
-  let mappedOption = option.replace('-l', 'lineCount');
-  mappedOption = mappedOption.replace('-w', 'wordCount');
-  mappedOption = mappedOption.replace('-c', 'charCount');
-  return mappedOption;
+const mapOptions = function(options){
+  return options.map(getLongOptions);
 }
 
-const isOnlyOne = function(option){
-  return option.length >= 9;
-}
+const createParameterObject = function (options, fileNames) {
+  return { options, fileNames};
+};
 
-const parser = function(args){
-  const maybeOption = mapOption(args[0]);
-  const fileName = args[1];
-  if(isOnlyOne(maybeOption)){
-    return createObject(maybeOption,fileName);
+const hasOption = function (option) {
+  return option.startsWith(HYPHEN);
+};
+
+const parser = function (userArgs) {
+  let options = userArgs.filter((userArg) => hasOption(userArg));
+  let fileNames = userArgs.slice(options.length);
+  options = options.map((option) => option.replace(HYPHEN, EMPTY));
+  options = options.join(EMPTY).split(EMPTY);
+  
+  if (options.length == 0) {
+    options = ['l', 'w', 'c'];
   }
-  return createObject(EMPTY,maybeOption);
-}
+  return createParameterObject(mapOptions(options), fileNames);
+};
 
 module.exports = { parser };

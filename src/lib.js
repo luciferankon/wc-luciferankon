@@ -31,11 +31,11 @@ const getCounts = function(content) {
 };
 
 const wc = function(args, fs) {
-  const { option, fileName}  = parser(args);
-  const content = fs.readFileSync(fileName, "utf8");
-  const {lineCount, wordCount, charCount} = getCounts(content, args);
-  const result = formatter({lineCount, wordCount, charCount, fileName}, option);
-  return result;
+  const { options, fileNames}  = parser(args);
+  const contents = fileNames.map(fileName => fs.readFileSync(fileName, "utf8"));
+  const [{lineCount, wordCount, charCount}] = contents.map(content => getCounts(content));
+  const result = fileNames.map(fileName => formatter({lineCount, wordCount, charCount, fileName}, options));
+  return result.join('');
 };
 
 module.exports = { wc };
