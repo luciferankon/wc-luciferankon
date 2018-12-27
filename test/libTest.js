@@ -55,5 +55,21 @@ describe('wc',() => {
     const expectedOutput = '\t1\t1 file';
     const actualOutput = wc(['-lw','file'], fs);
     assert.deepEqual(expectedOutput,actualOutput);
-  })
+  });
+  describe('for multiple files',() => {
+    beforeEach(()=>{
+      let filePath = {};
+      filePath['file'] = 'ankon\n';
+      filePath['file1'] = 'js\n';
+      fs = {
+        readFileSync : mockReader(filePath)
+      };
+    });
+
+    it('should return the number of line, words and characters with file names',() => {
+      const expectedOutput = '\t1\t1\t6 file\n\t1\t1\t3 file1\n\t2\t2\t9 total';
+      const actualOutput = wc(['file','file1'],fs);
+      assert.deepEqual(expectedOutput,actualOutput);
+    });
+  });
 });

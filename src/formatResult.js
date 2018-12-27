@@ -1,12 +1,12 @@
 const {SPACE, EMPTY, TAB} = require('./constants');
 
-const formatter = function(result, options, fileName){
+const formatter = function(options, fileDetails){
   const sortedOptions = sortOptions(options);
   const counts = sortedOptions.map(option => {
-    return TAB + result[option];
+    return TAB + fileDetails[option];
   });
   
-  return counts.join(EMPTY) + SPACE + fileName;
+  return counts.join(EMPTY) + SPACE + fileDetails.fileName;
 };
 
 const sortOptions = function(options) {
