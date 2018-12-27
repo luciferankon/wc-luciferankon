@@ -33,8 +33,9 @@ const getCounts = function(content) {
 const wc = function(args, fs) {
   const { options, fileNames}  = parser(args);
   const contents = fileNames.map(fileName => fs.readFileSync(fileName, "utf8"));
-  const [{lineCount, wordCount, charCount}] = contents.map(content => getCounts(content));
-  const result = fileNames.map(fileName => formatter({lineCount, wordCount, charCount, fileName}, options));
+  const [counts] = contents.map(getCounts);
+  const formatterOfOneFile = formatter.bind(null,counts,options);
+  const result = fileNames.map(formatterOfOneFile);
   return result.join('\n');
 };
 
