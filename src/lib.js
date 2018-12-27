@@ -35,7 +35,7 @@ const wc = function(args, fs) {
   const contents = fileNames.map(fileName => fs.readFileSync(fileName, "utf8"));
   const [{lineCount, wordCount, charCount}] = contents.map(content => getCounts(content));
   const result = fileNames.map(fileName => formatter({lineCount, wordCount, charCount, fileName}, options));
-  return result.join('');
+  return result.join('\n');
 };
 
 module.exports = { wc };
