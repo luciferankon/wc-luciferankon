@@ -1,27 +1,18 @@
 const {SPACE, EMPTY, TAB} = require('./constants');
 
-const isOnlyOne = function(option){
-  return option.length == 1;
-}
+const formatter = function(result, options){
+  const sortedOptions = sortOptions(options);
+  const counts = sortedOptions.map(option => {
+    return TAB + result[option];
+  });
+  
+  return counts.join(EMPTY) + SPACE + result.fileName;
+};
 
-const isTwo = function(option){
-  return option.length == 2;
-}
-
-const formatter = function(result, option){
-  const {lineCount, wordCount, charCount} = result;
-  let count = [EMPTY, lineCount, wordCount, charCount];
-  if(isOnlyOne(option)){
-    [option] = option;
-    count = [EMPTY, result[option]];
-  }
-  if(isTwo(option)){
-    const firstOption = result[option[0]];
-    const secondOption = result[option[1]];
-    count = [EMPTY, firstOption, secondOption];
-  }
-  return count.join(TAB) + SPACE + result.fileName;
-}
+const sortOptions = function(options) {
+  const sortedOptions = ['lineCount', 'wordCount', 'charCount'];
+  return sortedOptions.filter(option => options.includes(option));
+};
 
 module.exports = { 
   formatter

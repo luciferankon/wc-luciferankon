@@ -1,5 +1,5 @@
-const { EMPTY } = require('./constants');
-const HYPHEN = '-';
+const { EMPTY, HYPHEN } = require('./constants');
+
 
 const getLongOptions = function(shortOption){
   const options = {'l': 'lineCount', 'w': 'wordCount', 'c': 'charCount'};
@@ -18,10 +18,14 @@ const hasOption = function (option) {
   return option.startsWith(HYPHEN);
 };
 
+const replaceHyphen = function(option){
+  return option.replace(HYPHEN, EMPTY);
+}
+
 const parser = function (userArgs) {
-  let options = userArgs.filter((userArg) => hasOption(userArg));
+  let options = userArgs.filter(hasOption);
   let fileNames = userArgs.slice(options.length);
-  options = options.map((option) => option.replace(HYPHEN, EMPTY));
+  options = options.map(replaceHyphen);
   options = options.join(EMPTY).split(EMPTY);
   
   if (options.length == 0) {
