@@ -1,4 +1,4 @@
-const { EMPTY, HYPHEN } = require('./constants');
+const { EMPTY_STRING, HYPHEN } = require('./constants');
 
 
 const getLongOptions = function(shortOption){
@@ -19,14 +19,14 @@ const hasOption = function (option) {
 };
 
 const replaceHyphen = function(option){
-  return option.replace(HYPHEN, EMPTY);
+  return option.replace(HYPHEN, EMPTY_STRING);
 }
 
 const parse = function (userArgs) {
   let options = userArgs.filter(hasOption);
   let fileNames = userArgs.slice(options.length);
   options = options.map(replaceHyphen);
-  options = options.join(EMPTY).split(EMPTY);
+  options = options.join(EMPTY_STRING).split(EMPTY_STRING);
   
   if (options.length == 0) {
     options = ['l', 'w', 'c'];
