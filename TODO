@@ -1,6 +1,0 @@
-* make it work for one option and one file only
-  * make it work for -l and one file
-  * make it work for -c and one file
-  * make it work for -w and one file
-  
-* name the object with the details corrctly

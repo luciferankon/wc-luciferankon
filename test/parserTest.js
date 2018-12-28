@@ -1,11 +1,11 @@
 const assert = require("assert");
-const { parser } = require("../src/parser");
+const { parse } = require("../src/parser");
 
-describe("parser", () => {
+describe("parse", () => {
   describe("should return option and fileName in an object if", () => {
     it("one option and fileName is specified", () => {
       const expectedOutput = { options: ["lineCount"], fileNames: ["file"] };
-      const actualOutput = parser(["-l", "file"]);
+      const actualOutput = parse(["-l", "file"]);
       assert.deepEqual(expectedOutput, actualOutput);
     });
 
@@ -14,7 +14,7 @@ describe("parser", () => {
         options: ["lineCount", "charCount"],
         fileNames: ["file"]
       };
-      const actualOutput = parser(["-l", "-c", "file"]);
+      const actualOutput = parse(["-l", "-c", "file"]);
       assert.deepEqual(expectedOutput, actualOutput);
     });
 
@@ -23,7 +23,7 @@ describe("parser", () => {
         options: ["lineCount", "wordCount", "charCount"],
         fileNames: ["file"]
       };
-      const actualOutput = parser(["-l", "-w", "-c", "file"]);
+      const actualOutput = parse(["-l", "-w", "-c", "file"]);
       assert.deepEqual(expectedOutput, actualOutput);
     });
 
@@ -32,7 +32,7 @@ describe("parser", () => {
         options: ["lineCount", "wordCount"],
         fileNames: ["file"]
       };
-      const actualOutput = parser(["-l", "-w", "file"]);
+      const actualOutput = parse(["-l", "-w", "file"]);
       assert.deepEqual(expectedOutput, actualOutput);
     });
 
@@ -41,7 +41,7 @@ describe("parser", () => {
         options: ["lineCount", "wordCount", "charCount"],
         fileNames: ["file"]
       };
-      const actualOutput = parser(['-l','-w','-c','file']);
+      const actualOutput = parse(['-l','-w','-c','file']);
       assert.deepEqual(expectedOutput,actualOutput);
     });
   });

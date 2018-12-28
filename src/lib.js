@@ -1,4 +1,4 @@
-const { parser } = require('./parser');
+const { parse } = require('./parser');
 const { 
   getLines, 
   getChars, 
@@ -42,6 +42,7 @@ const addKeyValues = function(first, second){
   const fileName = 'total';
   return {lineCount, wordCount, charCount, fileName};
 }
+
 const getTotal = function(fileDetails){
   return fileDetails.reduce(addKeyValues);
 }
@@ -54,10 +55,14 @@ const ifMultipleFile = function(fileDetails){
   return fileDetails;
 }
 
+const getFiles = function(reader, fileNames){
+  const utf8Reader = readFile.bind(null, reader, 'utf-8');
+  return fileNames.map(utf8Reader);
+}
+
 const wc = function(args, fs) {
-  const { options, fileNames}  = parser(args);
-  const utf8Reader = readFile.bind(null, fs.readFileSync, 'utf-8');
-  const files = fileNames.map(utf8Reader);
+  const { options, fileNames}  = parse(args);
+  const files = getFiles(fs.readFileSync, fileNames);
   let fileDetails = files.map(getFileDetails);
   fileDetails = ifMultipleFile(fileDetails);
   const formatterOfOneFile = formatter.bind(null,options);

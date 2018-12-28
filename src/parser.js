@@ -22,7 +22,7 @@ const replaceHyphen = function(option){
   return option.replace(HYPHEN, EMPTY);
 }
 
-const parser = function (userArgs) {
+const parse = function (userArgs) {
   let options = userArgs.filter(hasOption);
   let fileNames = userArgs.slice(options.length);
   options = options.map(replaceHyphen);
@@ -34,4 +34,4 @@ const parser = function (userArgs) {
   return createParameterObject(mapOptions(options), fileNames);
 };
 
-module.exports = { parser };
+module.exports = { parse };
