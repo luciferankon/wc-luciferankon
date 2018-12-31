@@ -2,13 +2,14 @@ const { parse } = require('./parser');
 const { 
   getLines, 
   getChars, 
-  getWords
+  getWords,
+  isNotEmpty
 } =require('./utils');
 
 const { formatter } = require('./formatResult');
 
 const countWords = function(content) {
-  const words = getWords(content);
+  const words = getWords(content).filter(isNotEmpty);
   return words.length;
 };
 

@@ -13,4 +13,7 @@ const getWords = function(content) {
   return trimmedContent.split(/[ \n]+/);
 }
 
-module.exports = {getLines, getChars, getWords};
+const isNotEmpty = text => text !== EMPTY_STRING;
+
+
+module.exports = {getLines, getChars, getWords, isNotEmpty};
