@@ -1,12 +1,7 @@
-const { parse } = require('./parser');
-const { 
-  getLines, 
-  getChars, 
-  getWords,
-  isNotEmpty
-} =require('./utils');
+const { parse } = require("./parser");
+const { getLines, getChars, getWords, isNotEmpty } = require("./utils");
 
-const { formatter } = require('./formatResult');
+const { formatter } = require("./formatResult");
 
 const countWords = function(content) {
   const words = getWords(content).filter(isNotEmpty);
@@ -21,54 +16,56 @@ const countChars = function(content) {
 const countLines = function(content) {
   const lines = getLines(content);
   return lines.length - 1;
-  
 };
 
-const getFileDetails = function({fileContent, fileName}) {
+const getFileDetails = function({ fileContent, fileName }) {
   const lineCount = countLines(fileContent);
   const wordCount = countWords(fileContent);
   const charCount = countChars(fileContent);
   return { lineCount, wordCount, charCount, fileName };
 };
 
-const readFile = function(reader, encoding, fileName){
-  const fileContent = reader(fileName, encoding);
-  return {fileContent, fileName};
-}
-
-const addKeyValues = function(first, second){
+const addKeyValues = function(first, second) {
   const lineCount = first.lineCount + second.lineCount;
   const wordCount = first.wordCount + second.wordCount;
   const charCount = first.charCount + second.charCount;
-  const fileName = 'total';
-  return {lineCount, wordCount, charCount, fileName};
-}
+  const fileName = "total";
+  return { lineCount, wordCount, charCount, fileName };
+};
 
-const getTotal = function(fileDetails){
+const getTotal = function(fileDetails) {
   return fileDetails.reduce(addKeyValues);
-}
+};
 
-const ifMultipleFile = function(fileDetails){
-  if(fileDetails.length > 1){
+const ifMultipleFile = function(fileDetails) {
+  if (fileDetails.length > 1) {
     const total = getTotal(fileDetails);
     fileDetails.push(total);
   }
   return fileDetails;
-}
-
-const getFiles = function(reader, fileNames){
-  const utf8Reader = readFile.bind(null, reader, 'utf-8');
-  return fileNames.map(utf8Reader);
-}
-
-const wc = function(args, fs) {
-  const { options, fileNames}  = parse(args);
-  const files = getFiles(fs.readFileSync, fileNames);
-  let fileDetails = files.map(getFileDetails);
-  fileDetails = ifMultipleFile(fileDetails);
-  const formatterOfOneFile = formatter.bind(null,options);
-  const result = fileDetails.map(formatterOfOneFile);
-  return result.join('\n');
 };
 
-module.exports = { wc };
+const printWordCount = function(args, outStream, fs) {
+  const { fileNames, options } = parse(args);
+  let files = [];
+  let fileIndex = 0;
+  const readFileFromList = function(err, content) {
+    files.push({ fileContent: content, fileName: fileNames[fileIndex - 1] });
+    if (files.length == fileNames.length + 1) {
+      files.splice(0, 1);
+      return outStream(wc(files, options));
+    }
+    return fs.readFile(fileNames[fileIndex++], "utf-8", readFileFromList);
+  };
+  return readFileFromList("", "");
+};
+
+const wc = function(files, options) {
+  let fileDetails = files.map(getFileDetails);
+  fileDetails = ifMultipleFile(fileDetails);
+  const formatterOfOneFile = formatter.bind(null, options);
+  const result = fileDetails.map(formatterOfOneFile);
+  return result.join("\n");
+};
+
+module.exports = { printWordCount };

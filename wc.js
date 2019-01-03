@@ -30,11 +30,12 @@
   node ./wc.js -c -l -w file1 [file2]...
 */
 const fs = require ('fs');
-const { wc } = require ('./src/lib');
+const { printWordCount } = require ('./src/lib');
 //const { defaultFormatter, lineFormatter } = require('./src/formatResult')
 
 const main = function(){
-  console.log(wc(process.argv.slice(2),fs));
+  const args = process.argv.slice(2);
+  printWordCount(args, console.log, fs);
 }
 
 main();
