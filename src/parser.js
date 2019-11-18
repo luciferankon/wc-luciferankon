@@ -2,7 +2,7 @@ const { EMPTY_STRING, HYPHEN } = require('./constants');
 
 
 const getLongOptions = function(shortOption){
-  const options = {'l': 'lineCount', 'w': 'wordCount', 'c': 'charCount'};
+  const options = {'l': 'lineCount', 'w': 'wordCount', 's': 'charCount'};
   return options[shortOption];
 }
 
